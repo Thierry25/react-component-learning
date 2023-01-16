@@ -6,6 +6,7 @@ const Login = (props) => {
   const [password, setPassword] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = ({ target }) => {
     setUsername(target.value);
@@ -19,6 +20,7 @@ const Login = (props) => {
     if (username === "thierrymarcelin" && password === "marcelin") {
       setShowSuccess(true);
       setShowError(false);
+      navigate(`/welcome/${username}`);
     } else {
       setShowError(true);
       setShowSuccess(false);
@@ -26,6 +28,7 @@ const Login = (props) => {
   };
   return (
     <div className="login">
+      <h1>Login to start</h1>
       {showSuccess && (
         <div className="successMessage">Authenticated Successfully</div>
       )}
