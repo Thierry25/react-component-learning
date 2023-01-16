@@ -3,15 +3,15 @@ import todos from "../data/todos";
 
 const ListTodo = () => {
   return (
-    <div className="listTodo">
+    <div className="container">
       <h1>List of your tasks to complete</h1>
-      <table>
+      <table className="table">
         <thead>
-          <th>
-            <td>Description</td>
-            <td>Deadline</td>
-            <td>IsDone?</td>
-          </th>
+          <tr>
+            <th>Description</th>
+            <th>Deadline</th>
+            <th>IsDone?</th>
+          </tr>
         </thead>
         <tbody>
           {todos.map((todo) => {

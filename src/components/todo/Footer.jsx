@@ -1,10 +1,13 @@
 import React from "react";
+import "./Todo.css";
 
 const Footer = () => {
   return (
-    <div className="footer">
-      <hr /> Footer
-    </div>
+    <footer className="footer">
+      <div className="container">
+        ©2023 Thierry Marcelin all rigths reserved
+      </div>
+    </footer>
   );
 };
 

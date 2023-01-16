@@ -12,8 +12,9 @@ import Logout from "./Logout";
 const TodoAp = () => {
   return (
     <div className="todoApp">
-      <Header />
       <Router>
+        <Header />
+
         <Routes>
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/" element={<Login />} />
