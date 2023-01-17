@@ -25,7 +25,7 @@ const Welcome = () => {
   };
 
   const successfulResponse = (response) => {
-    console.log(response.status);
+    console.log(response);
     setMessage(response.data.message);
   };
 
@@ -46,7 +46,7 @@ const Welcome = () => {
         <br />
         <button
           className="btn btn-success m-3"
-          onClick={() => callHelloWorldWithName("thierry")}
+          onClick={() => callHelloWorldWithName(username)}
         >
           Call Hello World with Name
         </button>

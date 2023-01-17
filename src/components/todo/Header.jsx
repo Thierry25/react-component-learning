@@ -5,6 +5,7 @@ import { useAuth } from "./security/AuthContext";
 const Header = () => {
   const auth = useAuth();
   const isAuthenticated = auth.isAuthenticated;
+  const username = auth.username;
   return (
     <header className="border-bottom border-light border-5 mb-5 p-2">
       <div className="container">
@@ -14,7 +15,7 @@ const Header = () => {
               <ul className="navbar-nav">
                 <li className="nav-item fs-5">
                   {isAuthenticated && (
-                    <Link className="nav-link" to="/welcome/in28minutes">
+                    <Link className="nav-link" to={`/welcome/${username}`}>
                       Home
                     </Link>
                   )}
