@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
+import { useAuth } from "./security/AuthContext";
 
 const Login = (props) => {
   const [username, setUsername] = useState("thierrymarcelin");
   const [password, setPassword] = useState("");
-  const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
   const navigate = useNavigate();
+  const auth = useAuth();
 
   const handleChange = ({ target }) => {
     setUsername(target.value);
@@ -17,21 +18,15 @@ const Login = (props) => {
   };
 
   const handleSubmit = () => {
-    if (username === "thierrymarcelin" && password === "marcelin") {
-      setShowSuccess(true);
-      setShowError(false);
+    if (auth.login(username, password)) {
       navigate(`/welcome/${username}`);
     } else {
       setShowError(true);
-      setShowSuccess(false);
     }
   };
   return (
     <div className="login">
       <h1>Login to start</h1>
-      {showSuccess && (
-        <div className="successMessage">Authenticated Successfully</div>
-      )}
       {showError && (
         <div className="errorMessage">
           Authentication Failed. Please check your credentials
