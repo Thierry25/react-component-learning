@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
-import { retrieveTodo } from "./api/TodoApiService";
+import { useNavigate, useParams } from "react-router";
+import { patchTodo, retrieveTodo } from "./api/TodoApiService";
 import { useAuth } from "./security/AuthContext";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
 const Todo = () => {
   const username = useAuth().username;
@@ -10,8 +11,8 @@ const Todo = () => {
   const [currentTodo, setCurrentTodo] = useState({
     description: "",
     targetDate: "",
-    done: false,
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     retrieveTodo(username, id)
@@ -20,18 +21,80 @@ const Todo = () => {
         setCurrentTodo({
           description: val.description,
           targetDate: val.targetDate,
-          done: val.done,
         });
       })
       .catch((err) => console.log(err));
   }, [username, id]);
 
+  const onSubmit = function (values) {
+    patchTodo(username, id, values)
+      .then((response) => navigate("/todos"))
+      .catch((err) => console.log(err));
+  };
+
+  const validate = (values) => {
+    const errors = {
+      // description: "Enter a valid desc",
+    };
+
+    if (values.description.length < 5) {
+      errors.description = "Description should be at least 5 characters";
+    }
+    if (!values.targetDate) {
+      errors.targetDate = "Enter a target Date";
+    }
+
+    return errors;
+  };
+
   return (
     <div className="container">
       <h1>Enter Todo Details</h1>
-      <h1>{currentTodo.description}</h1>
-      <h1>{currentTodo.done.toString()}</h1>
-      <h1>{currentTodo.targetDate}</h1>
+      <Formik
+        initialValues={{
+          description: currentTodo.description,
+          targetDate: currentTodo.targetDate,
+        }}
+        enableReinitialize={true}
+        onSubmit={onSubmit}
+        validate={validate}
+      >
+        {(props) => {
+          return (
+            <Form className="form-group">
+              <ErrorMessage
+                name="description"
+                component="div"
+                className="alert alert-danger"
+              />
+              <ErrorMessage
+                name="targetDate"
+                component="div"
+                className="alert alert-danger"
+              />
+              <fieldset>
+                <label>Description</label>
+                <Field
+                  type="text"
+                  className="form-control"
+                  name="description"
+                />
+              </fieldset>
+
+              <fieldset>
+                <label>Target Date</label>
+                <Field type="date" className="form-control" name="targetDate" />
+              </fieldset>
+
+              <div>
+                <button className="btn btn-success m-2" type="submit">
+                  Update
+                </button>
+              </div>
+            </Form>
+          );
+        }}
+      </Formik>
     </div>
   );
 };

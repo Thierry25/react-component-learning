@@ -19,3 +19,7 @@ export const updateTodo = (username, id) => {
 export const retrieveTodo = (username, id) => {
   return apiClient.get(`/users/${username}/todos/${id}`);
 };
+
+export const patchTodo = (username, id, todo) => {
+  return apiClient.patch(`/users/${username}/todos/${id}`, todo);
+};
