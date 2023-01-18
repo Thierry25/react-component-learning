@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { patchTodo, retrieveTodo } from "./api/TodoApiService";
+import { patchTodo, retrieveTodo, createTodo } from "./api/TodoApiService";
 import { useAuth } from "./security/AuthContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
@@ -15,21 +15,29 @@ const Todo = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    retrieveTodo(username, id)
-      .then((response) => {
-        const val = response.data;
-        setCurrentTodo({
-          description: val.description,
-          targetDate: val.targetDate,
-        });
-      })
-      .catch((err) => console.log(err));
+    if (Number(id) !== -1) {
+      retrieveTodo(username, id)
+        .then((response) => {
+          const val = response.data;
+          setCurrentTodo({
+            description: val.description,
+            targetDate: val.targetDate,
+          });
+        })
+        .catch((err) => console.log(err));
+    }
   }, [username, id]);
 
   const onSubmit = function (values) {
-    patchTodo(username, id, values)
-      .then((response) => navigate("/todos"))
-      .catch((err) => console.log(err));
+    if (Number(id) === -1) {
+      createTodo(username, values)
+        .then(() => navigate("/todos"))
+        .catch((err) => console.log(err));
+    } else {
+      patchTodo(username, id, values)
+        .then(() => navigate("/todos"))
+        .catch((err) => console.log(err));
+    }
   };
 
   const validate = (values) => {
@@ -88,7 +96,7 @@ const Todo = () => {
 
               <div>
                 <button className="btn btn-success m-2" type="submit">
-                  Update
+                  Save
                 </button>
               </div>
             </Form>

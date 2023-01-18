@@ -79,6 +79,9 @@ const ListTodo = () => {
           })}
         </tbody>
       </table>
+      <div className="btn btn-success m-2" onClick={() => updateTodo(-1)}>
+        Add New Todo
+      </div>
     </div>
   );
 };
