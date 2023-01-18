@@ -14,6 +14,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Logout from "./Logout";
 import AuthProvider, { useAuth } from "./security/AuthContext";
+import Todo from "./Todo";
 
 const Authenticated = function ({ children }) {
   const auth = useAuth();
@@ -44,6 +45,15 @@ const TodoAp = () => {
               element={
                 <Authenticated>
                   <ListTodo />
+                </Authenticated>
+              }
+            />
+
+            <Route
+              path="/todo/:id"
+              element={
+                <Authenticated>
+                  <Todo />
                 </Authenticated>
               }
             />
