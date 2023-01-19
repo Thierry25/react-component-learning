@@ -1,6 +1,9 @@
 import React, { createContext, useContext, useState } from "react";
 import { apiClient } from "../api/ApiClient";
-import { executeBaiscAuthenticationService } from "../api/HelloWorldApiService";
+import {
+  executeBasicAuthenticationService,
+  executeJwtAuthenticationService,
+} from "../api/AuthenticationAPiService";
 
 export const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
@@ -10,10 +13,10 @@ const AuthProvider = ({ children }) => {
   const [username, setUserName] = useState("");
   const [token, setToken] = useState("");
 
-  async function login(username, password) {
+  async function loginBasic(username, password) {
     const baToken = `Basic ${window.btoa(`${username}:${password}`)}`;
     try {
-      const response = await executeBaiscAuthenticationService(baToken);
+      const response = await executeBasicAuthenticationService(baToken);
       if (response.status === 200) {
         setAuthenticated(true);
         setUserName(username);
@@ -32,16 +35,35 @@ const AuthProvider = ({ children }) => {
 
       return false;
     }
+  }
 
-    // if (username === "thierrymarcelin" && password === "marcelin") {
-    //   setAuthenticated(true);
-    //   setUserName(username);
-    //   return true;
-    // } else {
-    //   setAuthenticated(false);
-    //   setUserName(null);
-    //   return false;
-    // }
+  async function login(username, password) {
+    try {
+      const response = await executeJwtAuthenticationService(
+        username,
+        password
+      );
+      console.log(response);
+      if (response.status === 200) {
+        setAuthenticated(true);
+        setUserName(username);
+        console.log(response);
+        const jwtToken = `Bearer ${response.data.token}`;
+        setToken(jwtToken);
+        apiClient.interceptors.request.use((config) => {
+          config.headers["Authorization"] = jwtToken;
+          return config;
+        });
+        return true;
+      } else {
+        logout();
+        return false;
+      }
+    } catch (error) {
+      logout();
+
+      return false;
+    }
   }
 
   function logout() {

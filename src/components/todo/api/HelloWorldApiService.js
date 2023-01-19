@@ -11,11 +11,3 @@ export const retrivreHelloMessageWithName = (name, token) => {
     },
   });
 };
-
-export const executeBaiscAuthenticationService = (token) => {
-  return apiClient.get(`/authenticate`, {
-    headers: {
-      Authorization: token,
-    },
-  });
-};
