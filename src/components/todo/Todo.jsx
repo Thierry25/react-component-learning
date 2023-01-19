@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import { patchTodo, retrieveTodo, createTodo } from "./api/TodoApiService";
 import { useAuth } from "./security/AuthContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import moment from "moment";
 
 const Todo = () => {
   const username = useAuth().username;
@@ -49,7 +50,7 @@ const Todo = () => {
       errors.description = "Description should be at least 5 characters";
     }
     if (!values.targetDate) {
-      errors.targetDate = "Enter a target Date";
+      errors.targetDate = "Enter a valid target Date";
     }
 
     return errors;

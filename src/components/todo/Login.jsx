@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { useAuth } from "./security/AuthContext";
 
 const Login = (props) => {
-  const [username, setUsername] = useState("thierrymarcelin");
+  const [username, setUsername] = useState("Thierry");
   const [password, setPassword] = useState("");
   const [showError, setShowError] = useState(false);
   const navigate = useNavigate();
@@ -17,13 +17,13 @@ const Login = (props) => {
     setPassword(target.value);
   };
 
-  const handleSubmit = () => {
-    if (auth.login(username, password)) {
+  async function handleSubmit() {
+    if (await auth.login(username, password)) {
       navigate(`/welcome/${username}`);
     } else {
       setShowError(true);
     }
-  };
+  }
   return (
     <div className="login">
       <h1>Login to start</h1>

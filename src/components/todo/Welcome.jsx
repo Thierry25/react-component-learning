@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import {
   retrieveHelloWorldBean,
   retrivreHelloMessageWithName,
 } from "./api/HelloWorldApiService";
+import { useAuth } from "./security/AuthContext";
+
 const Welcome = () => {
-  const { username } = useParams();
+  const username = useAuth().username;
 
   const [message, setMessage] = useState("");
+  const token = useAuth().token;
 
   const callHelloWorld = () => {
     retrieveHelloWorldBean()
@@ -18,7 +20,7 @@ const Welcome = () => {
   };
 
   const callHelloWorldWithName = (name) => {
-    retrivreHelloMessageWithName(name)
+    retrivreHelloMessageWithName(name, token)
       .then((response) => successfulResponse(response))
       .catch((error) => errorResponse(error))
       .finally(() => console.log("HAHA"));
@@ -46,7 +48,7 @@ const Welcome = () => {
         <br />
         <button
           className="btn btn-success m-3"
-          onClick={() => callHelloWorldWithName(username)}
+          onClick={() => callHelloWorldWithName(username, token)}
         >
           Call Hello World with Name
         </button>
