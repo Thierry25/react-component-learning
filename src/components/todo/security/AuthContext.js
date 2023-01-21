@@ -13,29 +13,29 @@ const AuthProvider = ({ children }) => {
   const [username, setUserName] = useState("");
   const [token, setToken] = useState("");
 
-  async function loginBasic(username, password) {
-    const baToken = `Basic ${window.btoa(`${username}:${password}`)}`;
-    try {
-      const response = await executeBasicAuthenticationService(baToken);
-      if (response.status === 200) {
-        setAuthenticated(true);
-        setUserName(username);
-        setToken(baToken);
-        apiClient.interceptors.request.use((config) => {
-          config.headers["Authorization"] = baToken;
-          return config;
-        });
-        return true;
-      } else {
-        logout();
-        return false;
-      }
-    } catch (error) {
-      logout();
+  // async function loginBasic(username, password) {
+  //   const baToken = `Basic ${window.btoa(`${username}:${password}`)}`;
+  //   try {
+  //     const response = await executeBasicAuthenticationService(baToken);
+  //     if (response.status === 200) {
+  //       setAuthenticated(true);
+  //       setUserName(username);
+  //       setToken(baToken);
+  //       apiClient.interceptors.request.use((config) => {
+  //         config.headers["Authorization"] = baToken;
+  //         return config;
+  //       });
+  //       return true;
+  //     } else {
+  //       logout();
+  //       return false;
+  //     }
+  //   } catch (error) {
+  //     logout();
 
-      return false;
-    }
-  }
+  //     return false;
+  //   }
+  // }
 
   async function login(username, password) {
     try {
